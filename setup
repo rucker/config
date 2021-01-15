@@ -1,0 +1,8 @@
+#!/bin/bash
+
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+
+for brewfile in $(ls Brewfile*); do
+  echo Installing from Brewfile ${brewfile}
+  brew bundle --file=${brewfile}
+done
