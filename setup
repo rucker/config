@@ -1,6 +1,9 @@
 #!/bin/bash
 
-/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+type brew >/dev/null 2>&1 || {
+  echo Installing Homebrew...
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+}
 
 for brewfile in $(ls Brewfile*); do
   echo Installing from Brewfile ${brewfile}
