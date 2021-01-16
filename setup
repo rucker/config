@@ -156,9 +156,9 @@ echo "Setting up iTerm2 color schemes..."
 osascript <<EOD
 
 tell application "iTerm"
-	activate
+  activate
   delay 1
-	tell application "System Events" to keystroke "i" using command down
+  tell application "System Events" to keystroke "i" using command down
 end tell
 
 -- Bring the window "Preferences" to the front.
@@ -231,19 +231,19 @@ set uiScript to "click UI Element 3 of window \"Preferences\" of application pro
 my doWithTimeout( uiScript, timeoutSeconds )
 
 on doWithTimeout(uiScript, timeoutSeconds)
-	set endDate to (current date) + timeoutSeconds
-	repeat
-		try
-			run script "tell application \"System Events\"
+  set endDate to (current date) + timeoutSeconds
+  repeat
+    try
+      run script "tell application \"System Events\"
 " & uiScript & "
 end tell"
-			exit repeat
-		on error errorMessage
-			if ((current date) > endDate) then
-				error "Can not " & uiScript
-			end if
-		end try
-	end repeat
+      exit repeat
+    on error errorMessage
+      if ((current date) > endDate) then
+        error "Can not " & uiScript
+      end if
+    end try
+  end repeat
 end doWithTimeout
 
 EOD
@@ -251,7 +251,7 @@ EOD
 echo Configuring iTerm2 preferences...
 osascript <<EOD
 tell application "iTerm"
-	activate
+  activate
 end tell
 
 -- Press ⌘,
@@ -309,19 +309,33 @@ set uiScript to "click UI Element 3 of window \"Preferences\" of application pro
 my doWithTimeout(uiScript, timeoutSeconds)
 
 on doWithTimeout(uiScript, timeoutSeconds)
-	set endDate to (current date) + timeoutSeconds
-	repeat
-		try
-			run script "tell application \"System Events\"
+  set endDate to (current date) + timeoutSeconds
+  repeat
+    try
+      run script "tell application \"System Events\"
 " & uiScript & "
 end tell"
-			exit repeat
-		on error errorMessage
-			if ((current date) > endDate) then
-				error "Can not " & uiScript
-			end if
-		end try
-	end repeat
+      exit repeat
+    on error errorMessage
+      if ((current date) > endDate) then
+        error "Can not " & uiScript
+      end if
+    end try
+  end repeat
 end doWithTimeout
 
 EOD
+
+##############################################################################
+# Dotfiles                                                                   #
+##############################################################################
+
+echo "Setting up dotfiles..."
+[[ ! -d ~/repos ]] && mkdir ~/repos
+
+[[ ! -d ~/repos/dotfiles ]] && \
+  git clone git@github.com:rucker/dotfiles.git ~/repos/iTerm2-Color-Schemes
+
+~/repos/dotfiles/dotfiles.sh --install
+
+echo "Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script"
