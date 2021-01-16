@@ -1,4 +1,4 @@
-#!/bin/bash
+#!/usr/bin/env bash
 
 type brew >/dev/null 2>&1 || {
   echo Installing Homebrew...
