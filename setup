@@ -142,3 +142,100 @@ defaults write com.apple.DiskUtility advanced-image-options -bool true
 
 # Auto-play videos when opened with QuickTime Player
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
+
+##############################################################################
+
+echo "Setting up iTerm2 color schemes..."
+[[ ! -d ~/repos ]] && mkdir ~/repos
+
+[[ ! -d ~/repos/iTerm2-Color-Schemes ]] && \
+  git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ~/repos/iTerm2-Color-Schemes
+
+osascript <<EOD
+
+tell application "iTerm"
+	activate
+  delay 1
+	tell application "System Events" to keystroke "i" using command down
+end tell
+
+-- Bring the window "Preferences" to the front.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Colors" tab.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click radio button \"Colors\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Color Presets…" menu button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Import...
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click menu item \"Import...\" of menu 1 of menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Press ⇧⌘G
+delay 0.332212
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \"g\" using {shift down, command down}"
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Type '~/repos/iTerm2-Color-Schemes/schemes'
+delay 0.300195
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \"~/repos/iTerm2-Color-Schemes/schemes\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Press Return
+delay 0.064012
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \"
+\" "
+
+-- Select all themes
+tell application "System Events" to keystroke "a" using command down
+
+-- Click the "Open" button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element \"Open\" of window \"Open\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Color Presets…" menu button.
+delay 1
+set timeoutSeconds to 2.000000
+set uiScript to "click menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout( uiScript, timeoutSeconds )
+
+-- Solarized Dark Higher Contrast
+delay 1
+set timeoutSeconds to 2.000000
+set uiScript to "click menu item \"Solarized Dark Higher Contrast\" of menu 1 of menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout( uiScript, timeoutSeconds )
+
+on doWithTimeout(uiScript, timeoutSeconds)
+	set endDate to (current date) + timeoutSeconds
+	repeat
+		try
+			run script "tell application \"System Events\"
+" & uiScript & "
+end tell"
+			exit repeat
+		on error errorMessage
+			if ((current date) > endDate) then
+				error "Can not " & uiScript
+			end if
+		end try
+	end repeat
+end doWithTimeout
+
+EOD
