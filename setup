@@ -144,6 +144,8 @@ defaults write com.apple.DiskUtility advanced-image-options -bool true
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
 
 ##############################################################################
+# iTerm2 Configuration                                                       #
+##############################################################################
 
 echo "Setting up iTerm2 color schemes..."
 [[ ! -d ~/repos ]] && mkdir ~/repos
@@ -221,6 +223,90 @@ delay 1
 set timeoutSeconds to 2.000000
 set uiScript to "click menu item \"Solarized Dark Higher Contrast\" of menu 1 of menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
 my doWithTimeout( uiScript, timeoutSeconds )
+
+-- Click the "Close" button.
+delay 1
+set timeoutSeconds to 2.000000
+set uiScript to "click UI Element 3 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout( uiScript, timeoutSeconds )
+
+on doWithTimeout(uiScript, timeoutSeconds)
+	set endDate to (current date) + timeoutSeconds
+	repeat
+		try
+			run script "tell application \"System Events\"
+" & uiScript & "
+end tell"
+			exit repeat
+		on error errorMessage
+			if ((current date) > endDate) then
+				error "Can not " & uiScript
+			end if
+		end try
+	end repeat
+end doWithTimeout
+
+EOD
+
+echo Configuring iTerm2 preferences...
+osascript <<EOD
+tell application "iTerm"
+	activate
+end tell
+
+-- Press ⌘,
+delay 0.653743
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \",\" using command down"
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "General" toolbar button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element \"General\" of tool bar 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Preferences" tab.
+delay 0.534177
+set timeoutSeconds to 2.0
+set uiScript to "click radio button \"Preferences\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Load preferences from a custom folder or URL" checkbox.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click checkbox \"Load preferences from a custom folder or URL\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Press ⇧⌘G
+delay 0.332212
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \"g\" using {shift down, command down}"
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Go" button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element \"Go\" of sheet 1 of window \"Open\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Open" button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element \"Open\" of window \"Open\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Don't Copy" button.
+delay 1
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element 4 of window 1 of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Click the "Close" button.
+delay 2.088034
+set timeoutSeconds to 2.0
+set uiScript to "click UI Element 3 of window \"Preferences\" of application process \"iTerm2\""
+my doWithTimeout(uiScript, timeoutSeconds)
 
 on doWithTimeout(uiScript, timeoutSeconds)
 	set endDate to (current date) + timeoutSeconds
