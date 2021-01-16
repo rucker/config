@@ -1,5 +1,9 @@
 #!/usr/bin/env bash
 
+##############################################################################
+# Homebrew
+##############################################################################
+
 type brew >/dev/null 2>&1 || {
   echo Installing Homebrew...
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -39,6 +43,10 @@ while [[ $# -ge 1 ]]; do
   esac
 done
 
+###############################################################################
+# System                                                                      #
+###############################################################################
+
 echo Setting system Dark theme...
 osascript <<EOD
 tell application "System Preferences"
@@ -53,10 +61,6 @@ tell application "System Preferences"
   quit
 end tell
 EOD
-
-###############################################################################
-# General                                                                     #
-###############################################################################
 
 # Save to disk (not to iCloud) by default
 defaults write NSGlobalDomain NSDocumentSaveNewDocumentsToCloud -bool false
@@ -144,7 +148,7 @@ defaults write com.apple.DiskUtility advanced-image-options -bool true
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
 
 ##############################################################################
-# iTerm2 Configuration                                                       #
+# iTerm2                                                                     #
 ##############################################################################
 
 echo "Setting up iTerm2 color schemes..."
@@ -339,3 +343,20 @@ echo "Setting up dotfiles..."
 ~/repos/dotfiles/dotfiles.sh --install
 
 echo "Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script"
+
+##############################################################################
+# Karabiner-Elements                                                         #
+##############################################################################
+
+echo "Configuring Karabiner-Elements"
+osascript <<EOD
+tell application "Karabiner-Elements"
+  activate
+  delay 1
+  quit
+end tell
+EOD
+
+kb_config=~/.config/karabiner/karabiner.json
+[[ -f ${kb_config} ]] && rm ${kb_config}
+ln -s $(dirname $(realpath BASH_SOURCE[0]))/karabiner.json ${kb_config}
