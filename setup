@@ -5,7 +5,36 @@ type brew >/dev/null 2>&1 || {
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
-for brewfile in $(ls Brewfile*); do
-  echo Installing from Brewfile ${brewfile}
-  brew bundle --file=${brewfile}
+__usage() {
+  echo Usage: setup [--install-type=BREWFILE_EXT]
+}
+
+__brewfile_install() {
+  for brewfile in ${1}; do
+    echo brew bundle install from ${brewfile}
+    brew bundle --file=${brewfile}
+  done
+}
+
+[[ $# -eq 0 ]] && __brewfile_install "$(ls Brewfile*)"
+
+while [[ $# -ge 1 ]]; do
+  arg="$1"
+  case ${arg} in
+    --install-type*)
+      _ext=$(echo ${arg} | cut -d'=' -f 2)
+      _brewfiles=$(ls Brewfile* | grep ${_ext})
+      if [[ -z ${_brewfiles} ]]; then
+        echo "No Brewfiles matching \"${_ext}\" found!"
+        __usage
+        exit 1
+      else
+        __brewfile_install ${_brewfiles}
+      fi
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
 done
