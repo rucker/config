@@ -38,3 +38,18 @@ while [[ $# -ge 1 ]]; do
       ;;
   esac
 done
+
+echo Setting system Dark theme...
+osascript <<EOD
+tell application "System Preferences"
+  activate
+  set the current pane to pane id "com.apple.preference.general"
+end tell
+tell application "System Events" to tell process "System Preferences"
+  delay 1
+  click checkbox "Dark" of window "General"
+end tell
+tell application "System Preferences"
+  quit
+end tell
+EOD
