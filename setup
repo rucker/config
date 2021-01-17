@@ -4,13 +4,18 @@
 # Homebrew
 ##############################################################################
 
-type brew >/dev/null 2>&1 || {
-  echo Installing Homebrew...
-  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
-}
-
 __usage() {
   echo Usage: setup [--install-type=BREWFILE_EXT]
+}
+
+__is_avail() {
+  echo $(type ${1} >/dev/null 2>&1; echo $?)
+}
+
+__link_config() {
+  [[ -f "${1}" ]] && mv "${1}" "${1}.bak"
+
+  ln -s "$(dirname $(realpath BASH_SOURCE[0]))/${2}" "${1}"
 }
 
 __brewfile_install() {
@@ -18,6 +23,11 @@ __brewfile_install() {
     echo brew bundle install from ${brewfile}
     brew bundle --file=${brewfile}
   done
+}
+
+type brew >/dev/null 2>&1 || {
+  echo Installing Homebrew...
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 }
 
 [[ $# -eq 0 ]] && __brewfile_install "$(ls Brewfile*)"
@@ -48,6 +58,7 @@ done
 ###############################################################################
 
 echo Setting system Dark theme...
+
 osascript <<EOD
 tell application "System Preferences"
   activate
@@ -155,6 +166,7 @@ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 ##############################################################################
 
 echo Restarting configured apps...
+
 for app in "Activity Monitor" \
 	"Dock" \
 	"Finder"; do
@@ -167,6 +179,7 @@ echo Done.
 ##############################################################################
 
 echo "Setting up iTerm2 color schemes..."
+
 [[ ! -d ~/repos ]] && mkdir ~/repos
 
 [[ ! -d ~/repos/iTerm2-Color-Schemes ]] && \
@@ -349,7 +362,8 @@ EOD
 # Dotfiles                                                                   #
 ##############################################################################
 
-echo "Setting up dotfiles..."
+echo Setting up dotfiles...
+
 [[ ! -d ~/repos ]] && mkdir ~/repos
 
 [[ ! -d ~/repos/dotfiles ]] && \
@@ -357,13 +371,14 @@ echo "Setting up dotfiles..."
 
 ~/repos/dotfiles/dotfiles.sh --install
 
-echo "Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script"
+echo Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script
 
 ##############################################################################
 # Karabiner-Elements                                                         #
 ##############################################################################
 
-echo "Configuring Karabiner-Elements"
+echo Configuring Karabiner-Elements...
+
 osascript <<EOD
 tell application "Karabiner-Elements"
   activate
@@ -372,6 +387,21 @@ tell application "Karabiner-Elements"
 end tell
 EOD
 
-kb_config=~/.config/karabiner/karabiner.json
-[[ -f ${kb_config} ]] && rm ${kb_config}
-ln -s $(dirname $(realpath BASH_SOURCE[0]))/karabiner.json ${kb_config}
+__link_config "${HOME}/.config/karabiner/karabiner.json" configs/karabiner.json
+
+##############################################################################
+# VS Code                                                                    #
+##############################################################################
+
+echo Configuring Visual Studio Code...
+
+__link_config "${HOME}/Library/Application Support/Code/User/settings.json" configs/vscode.user.json
+
+if [[ ! __is_avail 'code' ]]; then
+  echo \'code\' not found on '$PATH'. Unable to install extensions.
+  echo For more information on running code from the CLI, see https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
+else
+  for ext in $(cat configs/vscode.extensions); do
+    code --install-extension ${ext}
+  done
+fi
