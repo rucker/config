@@ -151,6 +151,18 @@ defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
 defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 ##############################################################################
+# Kill/restart affected applications                                         #
+##############################################################################
+
+echo Restarting configured apps...
+for app in "Activity Monitor" \
+	"Dock" \
+	"Finder"; do
+	killall "${app}" &> /dev/null
+done
+echo Done.
+
+##############################################################################
 # iTerm2                                                                     #
 ##############################################################################
 
