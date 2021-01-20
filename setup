@@ -66,7 +66,10 @@ tell application "System Preferences"
 end tell
 tell application "System Events" to tell process "System Preferences"
   delay 1
-  click checkbox "Dark" of window "General"
+  set cb to checkbox "Dark" of window "General"
+  if not (value of cb as boolean) then
+    click cb
+  end if
 end tell
 tell application "System Preferences"
   quit
@@ -168,9 +171,9 @@ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 echo Restarting configured apps...
 
 for app in "Activity Monitor" \
-	"Dock" \
-	"Finder"; do
-	killall "${app}" &> /dev/null
+  "Dock" \
+  "Finder"; do
+  killall "${app}" &> /dev/null
 done
 echo Done.
 
@@ -305,15 +308,32 @@ set uiScript to "click radio button \"Preferences\" of tab group 1 of group 1 of
 my doWithTimeout(uiScript, timeoutSeconds)
 
 -- Click the "Load preferences from a custom folder or URL" checkbox.
-delay 1
-set timeoutSeconds to 2.0
-set uiScript to "click checkbox \"Load preferences from a custom folder or URL\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
-my doWithTimeout(uiScript, timeoutSeconds)
+tell application "System Events" to tell process "iTerm2"
+  set cb to checkbox "Load preferences from a custom folder or URL" of tab group 1 of group 1 of window 1
+  tell cb
+    if not (value of cb as boolean) then
+      click cb
+      -- File browser will pop automatically
+    else
+      -- Click the "Browse" button.
+      delay 1.845412
+      set timeoutSeconds to 2.0
+      set uiScript to "click UI Element \"Browse\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+      my doWithTimeout(uiScript, timeoutSeconds)
+    end if
+  end tell
+end tell
 
 -- Press ⇧⌘G
 delay 0.332212
 set timeoutSeconds to 2.0
 set uiScript to "keystroke \"g\" using {shift down, command down}"
+my doWithTimeout(uiScript, timeoutSeconds)
+
+-- Type '~/repos/config/configs'
+delay 0.300195
+set timeoutSeconds to 2.0
+set uiScript to "keystroke \"~/repos/config/configs\""
 my doWithTimeout(uiScript, timeoutSeconds)
 
 -- Click the "Go" button.
