@@ -13,7 +13,7 @@ __is_avail() {
 }
 
 __link_config() {
-  [[ -f "${1}" ]] && mv "${1}" "${1}.bak"
+  [[ -e "${1}" ]] && mv "${1}" "${1}.bak"
 
   ln -s "$(dirname $(realpath BASH_SOURCE[0]))/${2}" "${1}"
 }
@@ -399,15 +399,7 @@ echo Dotfiles repos are ready. Remember to configure your _local files and run d
 
 echo Configuring Karabiner-Elements...
 
-osascript <<EOD
-tell application "Karabiner-Elements"
-  activate
-  delay 1
-  quit
-end tell
-EOD
-
-__link_config "${HOME}/.config/karabiner/karabiner.json" configs/karabiner.json
+__link_config "~/.config/karabiner" configs/karabiner
 
 ##############################################################################
 # VS Code                                                                    #
@@ -415,7 +407,9 @@ __link_config "${HOME}/.config/karabiner/karabiner.json" configs/karabiner.json
 
 echo Configuring Visual Studio Code...
 
-__link_config "${HOME}/Library/Application Support/Code/User/settings.json" configs/vscode.user.json
+vs_config_dir="~/Library/Application Support/Code/User/"
+[[ ! -d ${vs_config_dir} ]] && mkdir -p ${vs_config_dir}
+__link_config "${vs_config_dir}settings.json" configs/vscode.user.json
 
 if [[ ! __is_avail 'code' ]]; then
   echo \'code\' not found on '$PATH'. Unable to install extensions.
