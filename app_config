@@ -232,7 +232,7 @@ fi
 # Karabiner-Elements                                                         #
 ##############################################################################
 
-if [[ $(__is_avail 'Karabiner-Elements.app') ]]; then
+if [[ $(__is_avail 'Karabiner-Elements.app') == true ]]; then
   echo Configuring Karabiner-Elements...
   __link_config "${HOME}/.config/karabiner" configs/karabiner
 fi
@@ -241,7 +241,7 @@ fi
 # VS Code                                                                    #
 ##############################################################################
 
-if [[ $(__is_avail 'Visual Studio Code.app') ]]; then
+if [[ $(__is_avail 'Visual Studio Code.app') == true ]]; then
   echo Configuring Visual Studio Code...
 
   vs_config_dir="${HOME}/Library/Application Support/Code/User/"
