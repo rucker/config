@@ -30,7 +30,7 @@ if [[ $(__is_avail 'iTerm.app') == true && ! -d ~/repos/iTerm2-Color-Schemes ]];
 
   tell application "iTerm"
     activate
-    delay 1
+    delay 2
     tell application "System Events" to keystroke "i" using command down
   end tell
 
