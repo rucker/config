@@ -20,7 +20,7 @@ __link_config() {
 # iTerm2                                                                     #
 ##############################################################################
 
-if [[ $(__is_avail 'iTerm2.app') == true ]]; then 
+if [[ $(__is_avail 'iTerm.app') == true ]]; then
   echo "Setting up iTerm2 color schemes..."
 
   [[ ! -d ~/repos ]] && mkdir ~/repos
@@ -61,7 +61,7 @@ if [[ $(__is_avail 'iTerm2.app') == true ]]; then
   my doWithTimeout(uiScript, timeoutSeconds)
 
   -- Press ⇧⌘G
-  delay 0.332212
+  delay 1
   set timeoutSeconds to 2.0
   set uiScript to "keystroke \"g\" using {shift down, command down}"
   my doWithTimeout(uiScript, timeoutSeconds)
@@ -75,8 +75,8 @@ if [[ $(__is_avail 'iTerm2.app') == true ]]; then
   -- Press Return
   delay 0.064012
   set timeoutSeconds to 2.0
-  set uiScript to "keystroke \"
-  \" "
+  set uiScript to "key code 36"
+  my doWithTimeout(uiScript, timeoutSeconds)
 
   -- Select all themes
   tell application "System Events" to keystroke "a" using command down
