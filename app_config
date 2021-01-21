@@ -1,0 +1,261 @@
+#!/usr/bin/env bash -e
+
+##############################################################################
+# Application Config                                                         #
+##############################################################################
+
+__is_avail() {
+  echo $(test -d "/Applications/${1}" || \
+    test -d "~/Applications/${1}" || \
+    type ${1} >/dev/null 2>&1 && \
+    echo true || echo false)
+}
+
+__link_config() {
+  [[ -e "${1}" ]] && mv "${1}" "${1}.bak"
+  ln -s "$(dirname $(realpath BASH_SOURCE[0]))/${2}" "${1}"
+}
+
+##############################################################################
+# iTerm2                                                                     #
+##############################################################################
+
+if [[ $(__is_avail 'iTerm2.app') == true ]]; then 
+  echo "Setting up iTerm2 color schemes..."
+
+  [[ ! -d ~/repos ]] && mkdir ~/repos
+
+  [[ ! -d ~/repos/iTerm2-Color-Schemes ]] && \
+    git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ~/repos/iTerm2-Color-Schemes
+
+  osascript <<-EOD
+
+  tell application "iTerm"
+    activate
+    delay 1
+    tell application "System Events" to keystroke "i" using command down
+  end tell
+
+  -- Bring the window "Preferences" to the front.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Colors" tab.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click radio button \"Colors\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Color Presets…" menu button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Import...
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click menu item \"Import...\" of menu 1 of menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Press ⇧⌘G
+  delay 0.332212
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \"g\" using {shift down, command down}"
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Type '~/repos/iTerm2-Color-Schemes/schemes'
+  delay 0.300195
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \"~/repos/iTerm2-Color-Schemes/schemes\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Press Return
+  delay 0.064012
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \"
+  \" "
+
+  -- Select all themes
+  tell application "System Events" to keystroke "a" using command down
+
+  -- Click the "Open" button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element \"Open\" of window \"Open\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Color Presets…" menu button.
+  delay 1
+  set timeoutSeconds to 2.000000
+  set uiScript to "click menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout( uiScript, timeoutSeconds )
+
+  -- Solarized Dark Higher Contrast
+  delay 1
+  set timeoutSeconds to 2.000000
+  set uiScript to "click menu item \"Solarized Dark Higher Contrast\" of menu 1 of menu button 1 of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout( uiScript, timeoutSeconds )
+
+  -- Click the "Close" button.
+  delay 1
+  set timeoutSeconds to 2.000000
+  set uiScript to "click UI Element 3 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout( uiScript, timeoutSeconds )
+
+  on doWithTimeout(uiScript, timeoutSeconds)
+    set endDate to (current date) + timeoutSeconds
+    repeat
+      try
+        run script "tell application \"System Events\"
+  " & uiScript & "
+  end tell"
+        exit repeat
+      on error errorMessage
+        if ((current date) > endDate) then
+          error "Can not " & uiScript
+        end if
+      end try
+    end repeat
+  end doWithTimeout
+
+	EOD
+
+  echo Configuring iTerm2 preferences...
+  osascript <<-EOD
+  tell application "iTerm"
+    activate
+  end tell
+
+  -- Press ⌘,
+  delay 0.653743
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \",\" using command down"
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "General" toolbar button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element \"General\" of tool bar 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Preferences" tab.
+  delay 0.534177
+  set timeoutSeconds to 2.0
+  set uiScript to "click radio button \"Preferences\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Load preferences from a custom folder or URL" checkbox.
+  tell application "System Events" to tell process "iTerm2"
+    set cb to checkbox "Load preferences from a custom folder or URL" of tab group 1 of group 1 of window 1
+    tell cb
+      if not (value of cb as boolean) then
+        click cb
+        -- File browser will pop automatically
+      else
+        -- Click the "Browse" button.
+        delay 1.845412
+        set timeoutSeconds to 2.0
+        set uiScript to "click UI Element \"Browse\" of tab group 1 of group 1 of window \"Preferences\" of application process \"iTerm2\""
+        my doWithTimeout(uiScript, timeoutSeconds)
+      end if
+    end tell
+  end tell
+
+  -- Press ⇧⌘G
+  delay 0.332212
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \"g\" using {shift down, command down}"
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Type '~/repos/config/configs'
+  delay 0.300195
+  set timeoutSeconds to 2.0
+  set uiScript to "keystroke \"~/repos/config/configs\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Go" button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element \"Go\" of sheet 1 of window \"Open\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Open" button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element \"Open\" of window \"Open\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Don't Copy" button.
+  delay 1
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element 4 of window 1 of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  -- Click the "Close" button.
+  delay 2.088034
+  set timeoutSeconds to 2.0
+  set uiScript to "click UI Element 3 of window \"Preferences\" of application process \"iTerm2\""
+  my doWithTimeout(uiScript, timeoutSeconds)
+
+  on doWithTimeout(uiScript, timeoutSeconds)
+    set endDate to (current date) + timeoutSeconds
+    repeat
+      try
+        run script "tell application \"System Events\"
+  " & uiScript & "
+  end tell"
+        exit repeat
+      on error errorMessage
+        if ((current date) > endDate) then
+          error "Can not " & uiScript
+        end if
+      end try
+    end repeat
+  end doWithTimeout
+
+	EOD
+fi
+
+##############################################################################
+# Dotfiles                                                                   #
+##############################################################################
+
+if [[ ! -d ~/repos/dotfiles ]]; then
+  echo Setting up dotfiles...
+  [[ ! -d ~/repos ]] && mkdir ~/repos
+  git clone git@github.com:rucker/dotfiles.git ~/repos/iTerm2-Color-Schemes
+  ~/repos/dotfiles/dotfiles.sh --install
+  echo Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script
+fi
+##############################################################################
+# Karabiner-Elements                                                         #
+##############################################################################
+
+if [[ $(__is_avail 'Karabiner-Elements.app') ]]; then
+  echo Configuring Karabiner-Elements...
+  __link_config "${HOME}/.config/karabiner" configs/karabiner
+fi
+
+##############################################################################
+# VS Code                                                                    #
+##############################################################################
+
+if [[ $(__is_avail 'Visual Studio Code.app') ]]; then
+  echo Configuring Visual Studio Code...
+
+  vs_config_dir="${HOME}/Library/Application Support/Code/User/"
+  [[ ! -d ${vs_config_dir} ]] && mkdir -p ${vs_config_dir}
+  __link_config "${vs_config_dir}settings.json" configs/vscode.user.json
+
+  if [[ $(__is_avail 'code') != true ]]; then
+    echo \'code\' not found on '$PATH'. Unable to install extensions.
+    echo For more information on running code from the CLI, see https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
+  else
+    for ext in $(cat configs/vscode.extensions); do
+      code --install-extension ${ext}
+    done
+  fi
+fi

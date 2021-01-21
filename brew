@@ -1,0 +1,49 @@
+#!/usr/bin/env bash -e
+
+##############################################################################
+# Homebrew Setup                                                             #
+##############################################################################
+
+__usage() {
+  echo Usage: setup [--install-type=BREWFILE_EXT]
+}
+
+__is_avail() {
+  echo $(type ${1} >/dev/null 2>&1 && echo true || echo false)
+}
+
+__brewfile_install() {
+  for brewfile in ${1}; do
+    echo brew bundle install from ${brewfile}
+    brew bundle --file=${brewfile}
+  done
+}
+
+if [[ $(__is_avail 'brew') != true ]]; then
+  echo Installing Homebrew...
+  /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+fi
+
+[[ $# -eq 0 ]] && __brewfile_install "$(ls Brewfile*)"
+
+while [[ $# -ge 1 ]]; do
+  arg="$1"
+  case ${arg} in
+    --install-type*)
+      _ext=$(echo ${arg} | cut -d'=' -f 2)
+      _brewfiles=$(ls Brewfile* | grep ${_ext})
+      if [[ -z ${_brewfiles} ]]; then
+        echo "No Brewfiles matching \"${_ext}\" found!"
+        __usage
+        exit 1
+      else
+        __brewfile_install ${_brewfiles}
+      fi
+      shift
+      ;;
+    *)
+      shift
+      ;;
+  esac
+done
+
