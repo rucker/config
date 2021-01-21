@@ -64,6 +64,41 @@ defaults write com.apple.desktopservices DSDontWriteNetworkStores -bool true
 defaults write com.apple.desktopservices DSDontWriteUSBStores -bool true
 
 ###############################################################################
+# Spotlight                                                                   #
+###############################################################################
+
+# Set spotlight search prefs
+defaults write com.apple.spotlight orderedItems -array \
+  '{ "enabled" = 1; "name" = "APPLICATIONS"; }' \
+  '{ "enabled" = 0; "name" = "MENU_SPOTLIGHT_SUGGESTIONS"; }' \
+  '{ "enabled" = 0; "name" = "MENU_CONVERSION"; }' \
+  '{ "enabled" = 1; "name" = "MENU_EXPRESSION"; }' \
+  '{ "enabled" = 1; "name" = "MENU_DEFINITION"; }' \
+  '{ "enabled" = 1; "name" = "SYSTEM_PREFS"; }' \
+  '{ "enabled" = 0; "name" = "DOCUMENTS"; }' \
+  '{ "enabled" = 1; "name" = "DIRECTORIES"; }' \
+  '{ "enabled" = 0; "name" = "PRESENTATIONS"; }' \
+  '{ "enabled" = 0; "name" = "SPREADSHEETS"; }' \
+  '{ "enabled" = 0; "name" = "PDF"; }' \
+  '{ "enabled" = 0; "name" = "MESSAGES"; }' \
+  '{ "enabled" = 0; "name" = "CONTACT"; }' \
+  '{ "enabled" = 0; "name" = "EVENT_TODO"; }' \
+  '{ "enabled" = 0; "name" = "IMAGES"; }' \
+  '{ "enabled" = 0; "name" = "BOOKMARKS"; }' \
+  '{ "enabled" = 0; "name" = "MUSIC"; }' \
+  '{ "enabled" = 0; "name" = "MOVIES"; }' \
+  '{ "enabled" = 0; "name" = "FONTS"; }' \
+  '{ "enabled" = 0; "name" = "MENU_OTHER"; }' \
+  '{ "enabled" = 1; "name" = "SOURCE"; }'
+
+# Load new settings before rebuilding the index
+killall mds > /dev/null 2>&1
+# Make sure indexing is enabled for the main volume
+sudo mdutil -i on / > /dev/null
+# Rebuild the index from scratch
+sudo mdutil -E / > /dev/null
+
+###############################################################################
 # Display                                                                     #
 ###############################################################################
 
@@ -119,7 +154,8 @@ echo Restarting configured apps...
 
 for app in "Activity Monitor" \
   "Dock" \
-  "Finder"; do
+  "Finder"\
+  "Spotlight"; do
   killall "${app}" &> /dev/null
 done
 echo Done.
