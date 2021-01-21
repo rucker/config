@@ -232,9 +232,12 @@ fi
 # Karabiner-Elements                                                         #
 ##############################################################################
 
-if [[ $(__is_avail 'Karabiner-Elements.app') == true ]]; then
+karabiner_config_dir="${HOME}/.config/karabiner"
+if [[ $(__is_avail 'Karabiner-Elements.app') == true && \
+  ! $(eval file -h "${karabiner_config_dir}") =~ 'symbolic link' ]]; then
+
   echo Configuring Karabiner-Elements...
-  __link_config "${HOME}/.config/karabiner" configs/karabiner
+  __link_config "${karabiner_config_dir}" configs/karabiner
   launchctl kickstart -k gui/`id -u`/org.pqrs.karabiner.karabiner_console_user_server
 fi
 
