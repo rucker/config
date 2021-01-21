@@ -249,8 +249,9 @@ if [[ $(__is_avail 'Visual Studio Code.app') == true ]]; then
   [[ ! -d "${vs_config_dir}" ]] && mkdir -p "${vs_config_dir}"
   __link_config "${vs_config_dir}settings.json" configs/vscode.user.json
 
-  code_bin=$(which code)
-  if [[ -z ${code_bin} ]]; then
+  if [[ $(__is_avail 'code') == true ]]; then
+    code_bin=$(which code)
+  else
     code_bin="/Applications/Visual Studio Code.app/Contents/Resources/app/bin/code"
     echo Warning: \'code\' not found on '$PATH'.
     echo For more information on running code from the CLI, see https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
