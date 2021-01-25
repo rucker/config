@@ -40,6 +40,10 @@ defaults write NSGlobalDomain AppleKeyboardUIMode -int 3
 # Set the timezone; see `sudo systemsetup -listtimezones` for other values
 sudo systemsetup -settimezone "America/New_York" > /dev/null
 
+# Set Key Repeat
+defaults write -g InitialKeyRepeat = 25
+defaults write -g KeyRepeat = 2
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
