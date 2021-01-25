@@ -43,5 +43,6 @@
         }
     },
     "editor.autoClosingBrackets": "never",
-    "editor.autoClosingQuotes": "never"
+    "editor.autoClosingQuotes": "never",
+    "markdown-preview-enhanced.liveUpdate": true
 }
