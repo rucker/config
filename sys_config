@@ -44,6 +44,14 @@ sudo systemsetup -settimezone "America/New_York" > /dev/null
 defaults write -g InitialKeyRepeat 25
 defaults write -g KeyRepeat 2
 
+# Set Touch Bar to show Fn keys first
+defaults write com.apple.touchbar.agent PresentationModeFnModes -array \
+  '{ "appWithControlStrip" = "functionKeys"; }'
+defaults write com.apple.touchbar.agent PresentationModeGlobal functionKeys
+
+# Use Fn keys as standard Fn keys (external keyboards)
+defaults write -g com.apple.keyboard.fnState 1
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
@@ -156,10 +164,15 @@ defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
 
 echo Restarting configured apps...
 
+pkill "Touch Bar Agent"
+
 for app in "Activity Monitor" \
   "Dock" \
-  "Finder"\
-  "Spotlight"; do
+  "Finder" \
+  "Spotlight" \
+  "ControlStrip" \
+  ; do
   killall "${app}" &> /dev/null
 done
+
 echo Done.
