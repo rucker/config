@@ -52,6 +52,9 @@ defaults write com.apple.touchbar.agent PresentationModeGlobal functionKeys
 # Use Fn keys as standard Fn keys (external keyboards)
 defaults write -g com.apple.keyboard.fnState 1
 
+# Turn off audible alerts
+osascript -e 'set volume alert volume 0'
+
 ###############################################################################
 # Finder                                                                      #
 ###############################################################################
