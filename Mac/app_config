@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+REPO_ROOT=$(git rev-parse --show-toplevel)
+
 ##############################################################################
 # Application Config                                                         #
 ##############################################################################
@@ -237,7 +239,7 @@ if [[ $(__is_avail 'Karabiner-Elements.app') == true && \
   ! $(eval file -h "${karabiner_config_dir}") =~ 'symbolic link' ]]; then
 
   echo Configuring Karabiner-Elements...
-  __link_config "${karabiner_config_dir}" configs/karabiner
+  __link_config "${karabiner_config_dir}" "${REPO_ROOT}/configs/karabiner"
   launchctl kickstart -k gui/`id -u`/org.pqrs.karabiner.karabiner_console_user_server
 fi
 
@@ -248,9 +250,9 @@ fi
 if [[ $(__is_avail 'Visual Studio Code.app') == true ]]; then
   echo Configuring Visual Studio Code...
 
-  vs_config_dir="${HOME}/Library/Application Support/Code/User/"
+  vs_config_dir="${HOME}/Library/Application Support/Code/User"
   [[ ! -d "${vs_config_dir}" ]] && mkdir -p "${vs_config_dir}"
-  __link_config "${vs_config_dir}settings.json" configs/vscode.user.json
+  __link_config "${vs_config_dir}/settings.json" "${REPO_ROOT}/configs/vscode.user.json"
 
   if [[ $(__is_avail 'code') == true ]]; then
     code_bin=$(which code)
@@ -259,7 +261,7 @@ if [[ $(__is_avail 'Visual Studio Code.app') == true ]]; then
     echo Warning: \'code\' not found on '$PATH'.
     echo For more information on running code from the CLI, see https://code.visualstudio.com/docs/setup/mac#_launching-from-the-command-line
   fi
-  for ext in $(cat configs/vscode.extensions); do
+  for ext in $(cat "${REPO_ROOT}/configs/vscode.extensions"); do
     ${code_bin} --install-extension ${ext}
   done
 fi
