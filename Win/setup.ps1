@@ -15,7 +15,7 @@ ForEach($ext in (Get-Content "$repoRootDir/configs/vscode.extensions")) {
 
 $vsConfigFile="$env:AppData/Code/User/settings.json"
 if (Test-Path $vsConfigFile) {
-  Move-Item $vsConfigFile ($vsConfigFile + '_' + $(Get-Date -Format "yyyy-MM-dd").bak)
+  Move-Item $vsConfigFile ($vsConfigFile + '_' + $(Get-Date -Format 'yyyy-MM-dd_HH-mm-ss').bak)
 }
 
 New-Item -ItemType symboliclink -path $vsConfigFile -Target $repoRootDir/configs/vscode.user.json
