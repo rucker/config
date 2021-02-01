@@ -1,4 +1,4 @@
-if (-Not (Get-Module Boxstarter.Chocolatey)) {
+if (-not (Get-Module Boxstarter.Chocolatey)) {
     . { iwr -useb https://boxstarter.org/bootstrapper.ps1 } | iex; Get-Boxstarter -Force
 }
 
@@ -8,7 +8,7 @@ if ($LastExitCode -ne 0) { exit }
 
 $repoRootDir=(git rev-parse --show-toplevel)
 
-Write-Host "Configuring VS Code..."
+Write-Host 'Configuring VS Code...'
 ForEach($ext in (Get-Content "$repoRootDir/configs/vscode.extensions")) {
     code --install-extension $ext
 }
