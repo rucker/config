@@ -14,8 +14,12 @@ __is_avail() {
 }
 
 __link_config() {
+  if [[ ! -e "${2}" ]]; then
+    echo ERROR: Config link target "${2}" does not exist! >&2
+    return
+  fi
   [[ -e "${1}" ]] && mv "${1}" "${1}_$(date +%Y-%m-%d_%H:%M:%S).bak"
-  ln -s "$(dirname $(realpath BASH_SOURCE[0]))/${2}" "${1}"
+  ln -s "${2}" "${1}"
 }
 
 ##############################################################################
