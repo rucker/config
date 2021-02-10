@@ -44,5 +44,6 @@
     },
     "editor.autoClosingBrackets": "never",
     "editor.autoClosingQuotes": "never",
-    "markdown-preview-enhanced.liveUpdate": true
+    "markdown-preview-enhanced.liveUpdate": true,
+    "vim.vimrc.enable": true
 }
