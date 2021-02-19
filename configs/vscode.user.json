@@ -1,6 +1,5 @@
 {
     "telemetry.enableTelemetry": false,
-    "files.autoSave": "afterDelay",
     "workbench.editor.enablePreview": false,
     "gitlens.menus": {
         "editor": {
@@ -45,5 +44,6 @@
     "editor.autoClosingBrackets": "never",
     "editor.autoClosingQuotes": "never",
     "markdown-preview-enhanced.liveUpdate": true,
+    "files.autoSave": "onFocusChange",
     "vim.vimrc.enable": true
 }
