@@ -45,5 +45,6 @@
     "editor.autoClosingQuotes": "never",
     "markdown-preview-enhanced.liveUpdate": true,
     "files.autoSave": "onFocusChange",
-    "vim.vimrc.enable": true
+    "vim.vimrc.enable": true,
+    "vim.incsearch": false
 }
