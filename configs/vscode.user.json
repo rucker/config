@@ -45,6 +45,12 @@
     "editor.autoClosingQuotes": "never",
     "markdown-preview-enhanced.liveUpdate": true,
     "files.autoSave": "onFocusChange",
-    "vim.vimrc.enable": true,
-    "vim.incsearch": false
+    "vim.incsearch": false,
+    "workbench.tree.indent": 24,
+    "workbench.startupEditor": "none",
+    "editor.cursorStyle": "line",
+    "editor.lineNumbers": "on",
+    "editor.wordWrap": "off",
+    "workbench.editor.wrapTabs": true,
+    "editor.tabSize": 2
 }
