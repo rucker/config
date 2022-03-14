@@ -52,5 +52,10 @@
     "editor.lineNumbers": "on",
     "editor.wordWrap": "off",
     "workbench.editor.wrapTabs": true,
-    "editor.tabSize": 2
+    "editor.tabSize": 2,
+    "debug.javascript.autoAttachFilter": "smart",
+    "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "vim.handleKeys": {
+    "<C-k>": false
+    }
 }
