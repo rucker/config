@@ -23,6 +23,8 @@ Install-BoxstarterPackage -PackageName https://gist.githubusercontent.com/rucker
 
 if ($LastExitCode -ne 0) { exit }
 
+Enable-MicrosoftUpdate
+
 $repoRootDir=(git rev-parse --show-toplevel)
 
 Write-Host 'Configuring VS Code...'
