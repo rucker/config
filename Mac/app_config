@@ -26,10 +26,11 @@ __link_config() {
 # iTerm2                                                                     #
 ##############################################################################
 
-if [[ $(__is_avail 'iTerm.app') == true && ! -d ~/repos/iTerm2-Color-Schemes ]]; then
+if [[ $(__is_avail 'iTerm.app') == true ]]; then
   echo "Setting up iTerm2 color schemes..."
 
   [[ ! -d ~/repos ]] && mkdir ~/repos
+  [[ ! -d ~/repos/iTerm2-Color-Schemes ]] && \
   git clone https://github.com/mbadolato/iTerm2-Color-Schemes.git ~/repos/iTerm2-Color-Schemes
 
   osascript <<-EOD
