@@ -1,1 +1,2 @@
 configs/karabiner/automatic_backups/
+*.lock.json
