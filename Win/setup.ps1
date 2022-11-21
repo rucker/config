@@ -15,6 +15,27 @@ function LinkConfig {
     }
 }
 
+# Note: the bash command below will fail if e.g. WSL is installed but has not been launched for the first time.
+# The error message will state: Windows Subsystem for Linux has no installed distributions.
+if (-Not (Test-Path $HOME\repos\dotfiles)) {
+  Write-Host Setting up dotfiles...
+  if (-Not (Test-Path $HOME\repos)) {
+    mkdir $HOME\repos
+  }
+  if (-Not (Test-Path $HOME\repos\dotfiles)) {
+    git clone https://github.com/rucker/dotfiles.git $HOME\repos\dotfiles
+  }
+}
+
+& 'C:\Program Files\Git\bin\bash.exe' -c '$HOME/repos/dotfiles/dotfiles.sh --install'
+
+$dotfilesExitCode = $LastExitCode
+if ($dotfilesExitCode -ne 0) {
+    Exit $dotfilesExitCode
+ }
+
+Write-Host Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script
+
 if (-not (Get-Module Boxstarter.Chocolatey)) {
     . { iwr -useb https://boxstarter.org/bootstrapper.ps1 } | iex; Get-Boxstarter -Force
 }
