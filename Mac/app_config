@@ -231,7 +231,7 @@ fi
 if [[ ! -d ~/repos/dotfiles ]]; then
   echo Setting up dotfiles...
   [[ ! -d ~/repos ]] && mkdir ~/repos
-  git clone https://github.com/rucker/dotfiles.git ~/repos/dotfiles
+  [[ ! -d ~/repos/dotfiles ]] && git clone https://github.com/rucker/dotfiles.git ~/repos/dotfiles
   ~/repos/dotfiles/dotfiles.sh --install
   echo Dotfiles repos are ready. Remember to configure your _local files and run dotfiles script
 fi
