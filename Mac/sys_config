@@ -141,8 +141,8 @@ defaults write com.apple.DiskUtility advanced-image-options -bool true
 # Auto-play videos when opened with QuickTime Player
 defaults write com.apple.QuickTimePlayerX MGPlayMovieOnOpen -bool true
 
-# Enable repeat keypresses for VS Code
-defaults write com.microsoft.VSCode ApplePressAndHoldEnabled -bool false
+# Enable repeat keypresses globally (VSCode.vim, IdeaVim...)
+defaults write -g ApplePressAndHoldEnabled -bool false
 
 ##############################################################################
 # Kill/restart affected applications                                         #
