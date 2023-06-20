@@ -45,8 +45,7 @@
     "editor.autoClosingQuotes": "never",
     "markdown-preview-enhanced.liveUpdate": true,
     "files.autoSave": "onFocusChange",
-    "vim.incsearch": false,
-    "workbench.tree.indent": 24,
+    "workbench.tree.indent": 6,
     "workbench.startupEditor": "none",
     "editor.cursorStyle": "line",
     "editor.lineNumbers": "on",
@@ -55,7 +54,42 @@
     "editor.tabSize": 2,
     "debug.javascript.autoAttachFilter": "smart",
     "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "[typescript]": {
+        "editor.defaultFormatter": "esbenp.prettier-vscode"
+    },
+    "vim.smartRelativeLine": true,
+    "redhat.telemetry.enabled": true,
+    "workbench.colorTheme": "Default Dark+",
+    "typescript.updateImportsOnFileMove.enabled": "always",
+    "editor.minimap.enabled": false,
+    "editor.fontSize": 11,
     "vim.handleKeys": {
     "<C-k>": false
-    }
+    },
+    "vim.incsearch": false,
+    "vim.normalModeKeyBindingsNonRecursive": [
+        {
+            "before": [
+                "u"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "undo"
+                }
+            ]
+        },
+        {
+            "before": [
+                "<C-r>"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "redo"
+                }
+            ]
+        }
+    ],
+    "terminal.integrated.persistentSessionReviveProcess": "never"
 }
