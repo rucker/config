@@ -1,5 +1,5 @@
 {
-    "telemetry.enableTelemetry": false,
+    "telemetry.telemetryLevel": "off",
     "workbench.editor.enablePreview": false,
     "gitlens.menus": {
         "editor": {
