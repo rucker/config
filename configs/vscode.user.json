@@ -1,6 +1,8 @@
 {
     "telemetry.telemetryLevel": "off",
     "workbench.editor.enablePreview": false,
+    "workbench.sideBar.location": "right",
+    "debug.toolBarLocation": "commandCenter",
     "gitlens.menus": {
         "editor": {
             "blame": false,
