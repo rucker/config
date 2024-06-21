@@ -54,6 +54,7 @@
     "editor.tabSize": 2,
     "debug.javascript.autoAttachFilter": "smart",
     "terminal.integrated.defaultProfile.windows": "Git Bash",
+    "terminal.integrated.persistentSessionReviveProcess": "never",
     "[typescript]": {
         "editor.defaultFormatter": "esbenp.prettier-vscode"
     },
@@ -89,7 +90,30 @@
                     "command": "redo"
                 }
             ]
-        }
+        },
     ],
-    "terminal.integrated.persistentSessionReviveProcess": "never"
+    "vim.insertModeKeyBindings": [
+        {
+            "before": [
+                "<C-a>"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "cursorHome"
+                }
+            ]
+        },
+        {
+            "before": [
+                "<C-e>"
+            ],
+            "after": [],
+            "commands": [
+                {
+                    "command": "cursorEnd"
+                }
+            ]
+        },
+    ],
 }

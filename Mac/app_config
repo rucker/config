@@ -258,6 +258,7 @@ if [[ $(__is_avail 'Visual Studio Code.app') == true ]]; then
   vs_config_dir="${HOME}/Library/Application Support/Code/User"
   [[ ! -d "${vs_config_dir}" ]] && mkdir -p "${vs_config_dir}"
   __link_config "${vs_config_dir}/settings.json" "${REPO_ROOT}/configs/vscode.user.json"
+  __link_config "${vs_config_dir}/keybindings.json" "${REPO_ROOT}/configs/vscode.keybindings.user.json"
 
   if [[ $(__is_avail 'code') == true ]]; then
     code_bin=$(which code)
