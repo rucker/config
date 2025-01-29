@@ -67,7 +67,9 @@
     "editor.minimap.enabled": false,
     "editor.fontSize": 11,
     "vim.handleKeys": {
-    "<C-k>": false
+    "<C-k>": false,
+    "<C-n>": false,
+    "<C-p>": false,
     },
     "vim.incsearch": false,
     "vim.normalModeKeyBindingsNonRecursive": [
@@ -118,4 +120,5 @@
             ]
         },
     ],
+    "workbench.list.openMode": "doubleClick",
 }
