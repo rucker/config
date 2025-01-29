@@ -1,0 +1,79 @@
+{
+  /* Based on https://gist.github.com/permil/ed5a66f7e0cb712b0a9c03532530b9dd */
+  "title": "Print Screen mapping compatible with Citrix Receiver/Workspace",
+  "rules": [
+      {
+        "description": "Except in Citrix, change print_screen to capture entire screen via Command-Shift-3",
+        "manipulators": [
+            {
+                "conditions": [
+                    {
+                        "bundle_identifiers": [
+                            "^com\\.citrix\\.XenAppViewer$",
+                            "^com\\.citrix\\.receiver\\.icaviewer\\.mac$"
+                        ],
+                        "type": "frontmost_application_unless"
+                    }
+                ],
+                "from": {
+                    "key_code": "print_screen"
+                },
+                "to": [
+                    {
+                        "key_code": "3",
+                        "modifiers": [
+                            "left_command",
+                            "left_shift"
+                        ]
+                    }
+                ],
+                "type": "basic"
+            }
+        ]
+    },
+    {
+        "description": "Except in Citrix, change print_screen to capture current window via Command-Shift-4",
+        "manipulators": [
+            {
+                "conditions": [
+                    {
+                        "bundle_identifiers": [
+                            "^com\\.citrix\\.XenAppViewer$",
+                            "^com\\.citrix\\.receiver\\.icaviewer\\.mac$"
+                        ],
+                        "type": "frontmost_application_unless"
+                    }
+                ],
+                "from": {
+                    "key_code": "print_screen",
+                    "modifiers": {
+                        "mandatory": [
+                            "option"
+                        ]
+                    }
+                },
+                "parameters": {
+                    "basic.to_delayed_action_delay_milliseconds": 50
+                },
+                "to": [
+                    {
+                        "key_code": "4",
+                        "modifiers": [
+                            "left_command",
+                            "left_shift"
+                        ]
+                    }
+                ],
+                "to_delayed_action": {
+                    "to_if_invoked": [
+                        {
+                            "key_code": "spacebar"
+                        }
+                    ]
+                },
+                "type": "basic"
+            }
+        ]
+    }
+  ]
+}
